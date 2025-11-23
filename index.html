@@ -141,12 +141,12 @@
     // Reemplaza esta URL con la URL base de tu repositorio de GitHub donde están las cartas.
     // Ejemplo: 'https://raw.githubusercontent.com/TuUsuario/TuRepositorio/main/cartas/'
     // Asegúrate de que termine en un slash (/).
-    const BINGO_CARDS_BASE_URL = 'https://github.com/AAlll33/bingosue'; 
+    const BINGO_CARDS_BASE_URL = 'https://raw.githubusercontent.com/AAlll33/bingosue/main/carta001.jpeg'; 
     
     // Función para construir la URL de la imagen
     const getCardImageUrl = (playerId) => {
         // Formato: carta001.jpeg
-        const cardName = `carta${playerId}.jpeg`;
+        const cardName = `carta${playerId}.jpg`;
         return `${BINGO_CARDS_BASE_URL}${cardName}`;
     };
     // =========================================================================
