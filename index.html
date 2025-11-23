@@ -114,9 +114,6 @@
      * ------------------------------------------------------------------
      * CONFIGURACIÓN DE FIREBASE (¡IMPORTANTE! ESTA SECCIÓN SE EDITA)
      * ------------------------------------------------------------------
-     * PASO 1: Cuando crees un nuevo proyecto en Firebase para tu cliente,
-     * pega aquí su objeto de configuración completo.
-     * ------------------------------------------------------------------
      */
     const firebaseConfig = {
       // ** REEMPLAZAR AQUÍ CON LA CONFIGURACIÓN DEL NUEVO CLIENTE **
@@ -138,14 +135,13 @@
     // =========================================================================
     //  ⚡️ NUEVA CONFIGURACIÓN: URL BASE DE LAS IMÁGENES ⚡️
     // =========================================================================
-    // Reemplaza esta URL con la URL base de tu repositorio de GitHub donde están las cartas.
-    // Ejemplo: 'https://raw.githubusercontent.com/TuUsuario/TuRepositorio/main/cartas/'
-    // Asegúrate de que termine en un slash (/).
-    const BINGO_CARDS_BASE_URL = 'https://github.com/AAlll33/bingosue/'; 
+    // IMPORTANTE: Se ha cambiado a la URL de contenido RAW de GitHub
+    // y se ha añadido la carpeta 'cartas/' al final para servir los archivos JPG.
+    const BINGO_CARDS_BASE_URL = 'https://raw.githubusercontent.com/AAlll33/bingosue/main/cartas/'; 
     
     // Función para construir la URL de la imagen
     const getCardImageUrl = (playerId) => {
-        // Formato: carta001.jpg
+        // Formato: cartas/carta001.jpg
         const cardName = `carta${playerId}.jpg`;
         return `${BINGO_CARDS_BASE_URL}${cardName}`;
     };
@@ -189,7 +185,8 @@
       if (!player) return null;
 
       const cardUrl = getCardImageUrl(player.id);
-      const downloadFileName = `Bingo_Ticket_${player.id}_${player.name.replace(/\s/g, '_')}.jpg`;
+      // Se corrigió el nombre de archivo de descarga
+      const downloadFileName = `Bingo_Ticket_${player.id}_${player.name.replace(/\s/g, '_')}.jpg`; 
 
       // Simplemente mostramos la imagen basándonos en el ID del jugador
       return (
@@ -544,7 +541,7 @@
                           <button disabled={actionLoading} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-bold shadow-md transition-all flex justify-center">
                             {actionLoading ? <Loader2 className="animate-spin" size={24}/> : "Asignar Cartón"}
                           </button>
-                           <p className="text-xs text-slate-500 mt-2 text-center">Se usará la imagen: <span className="font-mono text-indigo-500">{`carta${newId.padStart(3, '0')}.jpeg`}</span></p>
+                           <p className="text-xs text-slate-500 mt-2 text-center">Se usará la imagen: <span className="font-mono text-indigo-500">{`cartas/carta${newId.padStart(3, '0')}.jpg`}</span></p>
                         </form>
                       </div>
                     </div>
@@ -561,7 +558,7 @@
                               <span className="font-medium">{p.name}</span>
                             </div>
                             <div className="flex gap-2">
-                               <a href={getCardImageUrl(p.id)} download={`Bingo_Ticket_${p.id}.jpeg`} title="Descargar Imagen" className="p-2 text-green-500 hover:bg-green-100 rounded-full"><Download size={16}/></a>
+                               <a href={getCardImageUrl(p.id)} download={`Bingo_Ticket_${p.id}.jpg`} title="Descargar Imagen" className="p-2 text-green-500 hover:bg-green-100 rounded-full"><Download size={16}/></a>
                                <button title="Ver Cartón" onClick={() => { setFoundPlayer(p); setActiveTab('result'); }} className="p-2 text-blue-500 hover:bg-blue-100 rounded-full"><Search size={16}/></button>
                                <button title="Eliminar" onClick={() => handleDelete(p.id)} className="p-2 text-red-500 hover:bg-red-100 rounded-full"><Trash2 size={16}/></button>
                             </div>
