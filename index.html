@@ -79,7 +79,7 @@
             width: 100%;
             height: 100%;
             z-index: -2; /* Detrás de todo el contenido */
-            opacity: 3.3; /* Suaviza el efecto para no distraer */
+            opacity: 3.0; /* Suaviza el efecto para no distraer */
         }
         
         /* 2. Contenedor de las bolas de bingo */
@@ -272,7 +272,7 @@
             <div className="inline-flex items-center justify-center gap-2 bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full text-sm font-bold mb-2">
               <Hash size={14} /> TICKET #{player.id}
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-800 uppercase">BINGO <span className="text-indigo-600">APONTE</span></h2>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-800 uppercase">BINGO <span className="text-red-600">APONTE</span></h2>
             <p className="text-slate-500 font-medium text-lg mt-1 uppercase">{player.name}</p>
           </div>
           <div className="relative z-10 flex flex-col items-center justify-center">
@@ -497,7 +497,7 @@
       // ------------------------------------------------------------------
 
       return (
-        <div className="min-h-screen text-slate-800 font-sans selection:bg-indigo-200">
+        <div className="min-h-screen text-slate-800 font-sans selection:bg-red-200">
           {/* NAVBAR */}
           <nav className="bg-white sticky top-0 z-50 border-b border-slate-200 no-print shadow-sm">
             <div className="max-w-5xl mx-auto px-4 h-16 flex justify-between items-center">
@@ -511,18 +511,18 @@
                 */}
                 <img 
                     src="" 
-                    alt="Logo Bingo Aponte" 
+                    alt="Bingo Aponte" 
                     className="h-8 w-auto" 
                 />
-                <span className="font-black text-xl tracking-tight text-slate-800">Bingo<span className="text-indigo-600">Aponte</span></span>
+                <span className="font-black text-xl tracking-tight text-slate-800">Bingo<span className="text-red-600">Aponte</span></span>
               </div>
 
               {user ? (
-                 <button onClick={() => setActiveTab('admin')} className="text-sm font-medium text-indigo-600 flex items-center gap-1">
+                 <button onClick={() => setActiveTab('admin')} className="text-sm font-medium text-red-600 flex items-center gap-1">
                     <Lock size={16}/> ADMIN
                  </button>
               ) : (
-                <button onClick={() => setActiveTab('admin')} className="text-sm font-medium text-slate-500 hover:text-indigo-600 flex items-center gap-1">
+                <button onClick={() => setActiveTab('admin')} className="text-sm font-medium text-slate-500 hover:text-red-600 flex items-center gap-1">
                   <Lock size={16}/> Admin
                 </button>
               )}
@@ -700,13 +700,13 @@
                           REEMPLAZA LA ETIQUETA 'img' CON LA RUTA DE TU LOGO.
                           Ejemplo: <img src="./ruta/a/masson-logo.png" alt="Masson Logo" class="h-4 inline-block" /> 
                       */}
-                      <span class="font-black text-red-600">
+                      <span class="font-black text-black-600">
                           Masson©
                       </span>
                       Todos los derechos reservados.
                   </p>
                   <p class="text-xs text-slate-500 mt-2">
-                      Página creada por <span class="font-bold text-red-700">AngellAngell</span>. 
+                      Página creada por <span class="font-bold text-black-700">AngellAngell</span>. 
                       Escribe al WhatsApp <span class="font-bold text-green-600">+584226431972</span> para más información.
                   </p>
               </div>
