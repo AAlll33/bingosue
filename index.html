@@ -185,8 +185,39 @@
       if (!player) return null;
 
       const cardUrl = getCardImageUrl(player.id);
-      // Se corrigió el nombre de archivo de descarga
       const downloadFileName = `Bingo_Ticket_${player.id}_${player.name.replace(/\s/g, '_')}.jpg`; 
+
+      // ✨ FUNCIÓN CLAVE PARA DESCARGA EN MÓVILES (Blob) ✨
+      const handleDownloadImage = async () => {
+          try {
+              // 1. Obtener la imagen como un Blob
+              const response = await fetch(cardUrl);
+              const blob = await response.blob();
+              
+              // 2. Crear una URL de objeto temporal
+              const url = window.URL.createObjectURL(blob);
+              
+              // 3. Crear un elemento 'a' para simular el clic de descarga
+              const a = document.createElement('a');
+              a.style.display = 'none';
+              a.href = url;
+              a.download = downloadFileName; // Nombre del archivo
+
+              // 4. Agregar, hacer clic y remover el elemento 'a'
+              document.body.appendChild(a);
+              a.click();
+              window.URL.revokeObjectURL(url); // Liberar la URL temporal
+              document.body.removeChild(a);
+
+          } catch (error) {
+              console.error('Error al descargar la imagen:', error);
+              document.getElementById('modal-message').innerText = '❌ Error al intentar descargar la imagen.';
+              document.getElementById('error-modal').classList.remove('hidden');
+              setTimeout(() => document.getElementById('error-modal').classList.add('hidden'), 3000);
+          }
+      };
+      // ----------------------------------------------------
+
 
       // Simplemente mostramos la imagen basándonos en el ID del jugador
       return (
@@ -206,16 +237,13 @@
                    className="max-w-full h-auto rounded-lg shadow-md"
                />
              </div>
-             {/* Botón de Descarga AÑADIDO */}
-             <a 
-                 href={cardUrl}
-                 download={downloadFileName}
-                 target="_blank"
-                 rel="noopener noreferrer"
+             {/* Botón de Descarga MODIFICADO */}
+             <button 
+                 onClick={handleDownloadImage}
                  className="mt-4 bg-green-500 text-white px-6 py-3 rounded-full font-bold shadow-lg flex items-center gap-2 hover:bg-green-600 transition-colors no-print"
              >
                  <Download size={20} /> Descargar Cartón
-             </a>
+             </button>
           </div>
           <div className="mt-6 pt-4 border-t border-dashed border-slate-300 flex justify-between items-center text-xs text-slate-400">
             <span>Generado automáticamente</span>
@@ -392,6 +420,35 @@
       };
 
       const handlePrint = () => window.print();
+      
+      // ✨ FUNCIÓN PARA DESCARGA DIRECTA DESDE EL PANEL ADMIN ✨
+      const handleDownloadAdmin = async (id, name) => {
+          const cardUrl = getCardImageUrl(id);
+          const downloadFileName = `Bingo_Ticket_${id}_${name.replace(/\s/g, '_')}.jpg`; 
+          
+          try {
+              const response = await fetch(cardUrl);
+              const blob = await response.blob();
+              
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.style.display = 'none';
+              a.href = url;
+              a.download = downloadFileName;
+              
+              document.body.appendChild(a);
+              a.click();
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+
+          } catch (error) {
+              console.error('Error al descargar la imagen:', error);
+              document.getElementById('modal-message').innerText = '❌ Error al intentar descargar la imagen.';
+              document.getElementById('error-modal').classList.remove('hidden');
+              setTimeout(() => document.getElementById('error-modal').classList.add('hidden'), 3000);
+          }
+      };
+      // ------------------------------------------------------------------
 
       return (
         <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-indigo-200">
@@ -558,7 +615,8 @@
                               <span className="font-medium">{p.name}</span>
                             </div>
                             <div className="flex gap-2">
-                               <a href={getCardImageUrl(p.id)} download={`Bingo_Ticket_${p.id}.jpg`} title="Descargar Imagen" className="p-2 text-green-500 hover:bg-green-100 rounded-full"><Download size={16}/></a>
+                               {/* Botón de descarga en Admin MODIFICADO */}
+                               <button onClick={() => handleDownloadAdmin(p.id, p.name)} title="Descargar Imagen" className="p-2 text-green-500 hover:bg-green-100 rounded-full"><Download size={16}/></button>
                                <button title="Ver Cartón" onClick={() => { setFoundPlayer(p); setActiveTab('result'); }} className="p-2 text-blue-500 hover:bg-blue-100 rounded-full"><Search size={16}/></button>
                                <button title="Eliminar" onClick={() => handleDelete(p.id)} className="p-2 text-red-500 hover:bg-red-100 rounded-full"><Trash2 size={16}/></button>
                             </div>
