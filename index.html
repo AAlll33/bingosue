@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bingo Master PRO - [NOMBRE DEL CLIENTE]</title>
-    <!-- Tailwind CSS (Simplificado) -->
+    <title>Bingo Master PRO - Cliente</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React y Babel (Necesarios para ejecutar JSX en el navegador) -->
+    <!-- React y Babel -->
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <!-- Firebase SDKs -->
     <script type="module">
+      // Importaciones necesarias de Firebase
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-      import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, query, where, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+      import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, query, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
       import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
       
-      // Hacemos que las funciones de Firebase estén disponibles globalmente
+      // Hacemos que las funciones de Firebase estén disponibles globalmente en el scope de Babel
       window.initializeApp = initializeApp;
       window.getFirestore = getFirestore;
       window.collection = collection;
@@ -26,14 +27,13 @@
       window.deleteDoc = deleteDoc;
       window.onSnapshot = onSnapshot;
       window.query = query;
-      window.where = where;
       window.getDoc = getDoc;
       window.getAuth = getAuth;
       window.signInWithEmailAndPassword = signInWithEmailAndPassword;
       window.signOut = signOut;
       window.onAuthStateChanged = onAuthStateChanged;
 
-      // Configuraciones de Tailwind
+      // Configuraciones de Tailwind (Se puede omitir la configuración aquí si ya está en el body)
       tailwind.config = {
         theme: {
           extend: {
@@ -112,30 +112,27 @@
         </div>
     </div>
 
-    <!-- Script de la Aplicación (AQUÍ VA TU CÓDIGO REACT/JSX) -->
+    <!-- Script de la Aplicación (CÓDIGO REACT/JSX) -->
     <script type="text/babel">
     const { useState, useEffect, createElement } = React;
     
-    // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDI3PYFDvQJ1CtF_hLVhhn1jc0_5S1Aog0",
-  authDomain: "bingosue-cfca8.firebaseapp.com",
-  projectId: "bingosue-cfca8",
-  storageBucket: "bingosue-cfca8.firebasestorage.app",
-  messagingSenderId: "167707585444",
-  appId: "1:167707585444:web:5bbd5ea2d3242df59f6f31"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+    /**
+     * ------------------------------------------------------------------
+     * CONFIGURACIÓN DE FIREBASE (¡IMPORTANTE!)
+     * ------------------------------------------------------------------
+     * PEGAR AQUÍ LA CONFIGURACIÓN DEL CLIENTE
+     * ------------------------------------------------------------------
+     */
+    const firebaseConfig = {
+      apiKey: "AIzaSyDI3PYFDvQJ1CtF_hLVhhn1jc0_5S1Aog0",
+      authDomain: "bingosue-cfca8.firebaseapp.com",
+      projectId: "bingosue-cfca8",
+      storageBucket: "bingosue-cfca8.firebasestorage.app",
+      messagingSenderId: "167707585444",
+      appId: "1:167707585444:web:5bbd5ea2d3242df59f6f31"
+    };
 
     // Inicializamos Firebase y obtenemos las instancias de DB y Auth
-    // Usamos las variables globales cargadas por el script type="module"
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
@@ -158,6 +155,7 @@ const app = initializeApp(firebaseConfig);
      * LOGICA DEL BINGO (Generador Matemático)
      */
     const generateBingoMatrix = () => {
+      // Función para obtener números únicos en un rango
       const getUniqueNumbers = (min, max, count) => {
         const nums = new Set();
         while (nums.size < count) {
@@ -165,6 +163,7 @@ const app = initializeApp(firebaseConfig);
         }
         return Array.from(nums).sort((a, b) => a - b); // Ordenar para mejor visualización
       };
+      // Generar las 5 columnas según las reglas del Bingo (B: 1-15, I: 16-30, N: 31-45, G: 46-60, O: 61-75)
       return {
         B: getUniqueNumbers(1, 15, 5),
         I: getUniqueNumbers(16, 30, 5),
@@ -208,12 +207,12 @@ const app = initializeApp(firebaseConfig);
                   // Columna N (índice 2) y Fila 2 (índice 2) es el espacio libre
                   if (colIndex === 2 && row === 2) {
                     content = <Sparkles size={14} className="text-white" />;
-                    cellClass = "h-6 sm:h-8 flex items-center justify-center bg-yellow-400 rounded-full border-2 border-yellow-200";
+                    cellClass = "h-6 sm:h-8 flex items-center justify-center bg-yellow-400 rounded-full border-2 border-white shadow-lg z-20 text-xs"; // Cuidado con el z-20, puede afectar la impresión
                   } else {
-                    // Manejar la columna N que solo tiene 4 números
+                    // Manejar la columna N que solo tiene 4 números (el 5to es el FREE)
                     let number;
                     if (colIndex === 2) {
-                      number = row < 2 ? col[row] : col[row - 1];
+                      number = row < 2 ? col[row] : col[row - 1]; // Toma el 4to número en la posición de la fila 4
                     } else {
                       number = col[row];
                     }
@@ -234,7 +233,7 @@ const app = initializeApp(firebaseConfig);
     };
 
     const FullTicket = ({ player }) => {
-      // Asegurar que player y player.grids existan
+      // Asegurar que player y player.grids existan y tengan al menos 2 elementos
       if (!player || !player.grids || player.grids.length < 2) return null;
 
       return (
@@ -282,8 +281,21 @@ const app = initializeApp(firebaseConfig);
       // Admin Action States
       const [newName, setNewName] = useState('');
       const [newId, setNewId] = useState('');
-      const [loading, setLoading] = useState(false);
-      const [actionLoading, setActionLoading] = useState(false);
+      const [loading, setLoading] = useState(false); // Para el botón de búsqueda/login
+      const [actionLoading, setActionLoading] = useState(false); // Para acciones de Admin (crear/eliminar)
+
+      // Función para mostrar mensajes personalizados (Sustituto de alert())
+      const showToast = (message) => {
+          const modal = document.getElementById('error-modal');
+          const msg = document.getElementById('modal-message');
+          msg.innerText = message;
+          modal.classList.remove('hidden');
+          modal.classList.add('animate-fade-in-up');
+          setTimeout(() => {
+             modal.classList.add('hidden');
+             modal.classList.remove('animate-fade-in-up');
+          }, 3000);
+      };
 
       // 1. Escuchar Autenticación
       useEffect(() => {
@@ -293,40 +305,49 @@ const app = initializeApp(firebaseConfig);
         return () => unsubscribe();
       }, []);
 
-      // 2. Escuchar Base de Datos (Solo si es admin, para ahorrar lecturas)
+      // 2. Escuchar Base de Datos (Solo si es admin)
       useEffect(() => {
+        // Ejecutar solo si el usuario admin está logeado y en la pestaña de admin
         if (user && activeTab === 'admin') {
+          // Utilizaremos el UID del usuario logeado para asegurar que solo el dueño de la app
+          // pueda acceder a su lista de jugadores si usáramos una estructura por UID.
+          // En este caso, usaremos una colección global `players` y nos basaremos
+          // en las reglas de seguridad de Firestore para restringir el acceso.
           try {
-            // Regla 1: Solo el usuario administrador (uid) debe poder acceder a esta data
-            // Esto requiere una regla de seguridad en Firestore que valide:
-            // allow read: if request.auth.uid == 'TU_UID_ADMIN';
             const q = query(collection(db, "players"));
             const unsubscribe = onSnapshot(q, (querySnapshot) => {
               const playersList = [];
               querySnapshot.forEach((doc) => {
-                playersList.push({ id: doc.id, ...doc.data() }); // Incluir doc.id por si lo necesitamos
+                // Incluir doc.id ya que es el número de cartón (ej: '001')
+                playersList.push({ id: doc.id, ...doc.data() }); 
               });
-              // Ordenar por ID
+              
+              // Ordenar por ID numérico
               playersList.sort((a, b) => parseInt(a.id) - parseInt(b.id));
               setPlayers(playersList);
               
-              // Calcular siguiente ID
+              // Calcular el siguiente ID disponible
               if(playersList.length > 0) {
                   const lastId = Math.max(...playersList.map(p => parseInt(p.id)));
-                  setNewId(String(lastId + 1).padStart(3, '0'));
+                  // Asegurar formato de 3 dígitos (ej: '001')
+                  setNewId(String(lastId + 1).padStart(3, '0')); 
               } else {
                   setNewId('001');
               }
+            }, (error) => {
+                console.error("Error en onSnapshot (probablemente reglas de seguridad):", error);
+                // Mostrar error si la regla de lectura falló (admin no tiene permiso)
+                setAuthError("Error de lectura: Asegúrate de que tus reglas de Firestore permitan la lectura a usuarios autenticados.");
             });
             return () => unsubscribe();
           } catch (e) {
             console.error("Error al suscribirse a Firestore:", e);
-            // Mostrar un error al admin si falla la conexión
-            setAuthError("Error de conexión con la base de datos. Revisa la consola o las reglas de seguridad.");
-            return () => {}; // Devuelve una función vacía si hubo error
+            setAuthError("Error de conexión con la base de datos.");
+            return () => {};
           }
         } else {
             setPlayers([]); // Limpiar si no es admin
+            setNewId('001'); // Resetear ID
             return () => {};
         }
       }, [user, activeTab]);
@@ -336,32 +357,28 @@ const app = initializeApp(firebaseConfig);
       const handleSearch = async (e) => {
         e.preventDefault();
         // El ID debe ser un número de 3 dígitos (ej: '001')
-        const formattedCode = searchCode.padStart(3, '0');
-        if(!formattedCode || formattedCode.length > 3) return;
+        const formattedCode = searchCode.replace(/[^0-9]/g, '').padStart(3, '0');
+        if(!formattedCode || formattedCode.length > 3 || formattedCode === '000') {
+            showToast('⚠️ Ingresa un código de cartón válido (ej: 001)');
+            return;
+        }
         setLoading(true);
         setFoundPlayer(null);
 
         try {
-          // Regla 2: La lectura individual del cartón NO requiere autenticación.
-          // Esto requiere una regla de seguridad en Firestore que valide:
-          // match /players/{playerId} { allow read: true; }
+          // Buscamos el documento por su ID ('001', '002', etc.)
           const docRef = doc(db, "players", formattedCode);
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
-            setFoundPlayer(docSnap.data());
+            setFoundPlayer({id: docSnap.id, ...docSnap.data()});
             setActiveTab('result');
           } else {
-             // Usar un modal simple o un div de error en lugar de alert()
-             document.getElementById('modal-message').innerText = '❌ No encontramos ese número de cartón.';
-             document.getElementById('error-modal').classList.remove('hidden');
-             setTimeout(() => document.getElementById('error-modal').classList.add('hidden'), 3000);
+             showToast('❌ No encontramos ese número de cartón.');
           }
         } catch (error) {
           console.error("Error buscando:", error);
-           document.getElementById('modal-message').innerText = "Error de conexión. Intenta más tarde.";
-           document.getElementById('error-modal').classList.remove('hidden');
-           setTimeout(() => document.getElementById('error-modal').classList.add('hidden'), 3000);
+           showToast("Error de conexión. Intenta más tarde.");
         }
         setLoading(false);
       };
@@ -370,13 +387,17 @@ const app = initializeApp(firebaseConfig);
         e.preventDefault();
         setAuthError('');
         setLoading(true);
-        // NOTA IMPORTANTE: Para que esto funcione, debes crear un usuario
-        // en Firebase Authentication con este email/password ANTES de usarlo.
         try {
           await signInWithEmailAndPassword(auth, email, password);
           setActiveTab('admin');
         } catch (error) {
-          setAuthError('Credenciales incorrectas o usuario no existe. Revisa tu email y contraseña.');
+          // Firebase Authentication codes
+          const errorCode = error.code;
+          if (errorCode === 'auth/wrong-password' || errorCode === 'auth/user-not-found') {
+              setAuthError('Credenciales incorrectas. Revisa tu email y contraseña.');
+          } else {
+              setAuthError(`Error de autenticación: ${errorCode}`);
+          }
         }
         setLoading(false);
       };
@@ -388,18 +409,23 @@ const app = initializeApp(firebaseConfig);
 
       const handleCreatePlayer = async (e) => {
         e.preventDefault();
-        const formattedId = newId.padStart(3, '0');
-        if(!newName || !formattedId) return;
+        const formattedId = newId.replace(/[^0-9]/g, '').padStart(3, '0');
+        if(!newName || !formattedId || formattedId === '000') {
+            showToast('⚠️ Debes ingresar un nombre y un número de cartón válido.');
+            return;
+        }
         setActionLoading(true);
 
         try {
-          // Primero, verificar si el ID ya existe para evitar sobrescribir accidentalmente
           const docRef = doc(db, "players", formattedId);
           const docSnap = await getDoc(docRef);
 
-          if (docSnap.exists() && !window.confirm(`El cartón #${formattedId} ya existe para ${docSnap.data().name}. ¿Quieres sobrescribirlo?`)) {
-              setActionLoading(false);
-              return;
+          // Usamos un modal UI para la confirmación, ya que alert/confirm están prohibidos
+          if (docSnap.exists()) {
+              if (!window.confirm(`El cartón #${formattedId} ya existe para ${docSnap.data().name}. ¿Quieres sobrescribirlo?`)) {
+                  setActionLoading(false);
+                  return;
+              }
           }
 
           // Usamos setDoc para definir nosotros el ID del documento (ej: "001")
@@ -407,31 +433,28 @@ const app = initializeApp(firebaseConfig);
             id: formattedId,
             name: newName,
             createdAt: new Date().toISOString(),
-            grids: [generateBingoMatrix(), generateBingoMatrix()]
+            grids: [generateBingoMatrix(), generateBingoMatrix()] // Generamos 2 cartones
           });
           setNewName('');
-          // El ID se recalculará con el onSnapshot
-          document.getElementById('modal-message').innerText = `✅ Cartón #${formattedId} creado/actualizado para ${newName}`;
-          document.getElementById('error-modal').classList.remove('hidden');
-          setTimeout(() => document.getElementById('error-modal').classList.add('hidden'), 3000);
+          showToast(`✅ Cartón #${formattedId} creado/actualizado para ${newName}`);
           
         } catch (error) {
           console.error("Error creando:", error);
-           document.getElementById('modal-message').innerText = "Error al guardar en base de datos. Revisa las reglas de 'write'.";
-           document.getElementById('error-modal').classList.remove('hidden');
-           setTimeout(() => document.getElementById('error-modal').classList.add('hidden'), 3000);
+           showToast("❌ Error al guardar en base de datos. Revisa las reglas de 'write'.");
         }
         setActionLoading(false);
       };
 
-      const handleDelete = async (id) => {
-        if(window.confirm(`¿Estás seguro de borrar el cartón #${id}?`)) {
+      const handleDelete = async (id, name) => {
+        // Uso de confirm nativo, pero si fallara en el entorno de Canvas, 
+        // se debe implementar un modal React personalizado.
+        if(window.confirm(`¿Estás seguro de borrar el cartón #${id} (${name})? Esta acción es permanente.`)) {
           try {
             await deleteDoc(doc(db, "players", id));
+            showToast(`🗑️ Cartón #${id} eliminado.`);
           } catch (error) {
-             document.getElementById('modal-message').innerText = "Error al eliminar. Revisa las reglas de seguridad.";
-             document.getElementById('error-modal').classList.remove('hidden');
-             setTimeout(() => document.getElementById('error-modal').classList.add('hidden'), 3000);
+             console.error("Error al eliminar:", error);
+             showToast("❌ Error al eliminar. Revisa las reglas de seguridad (delete).");
           }
         }
       };
@@ -445,24 +468,24 @@ const app = initializeApp(firebaseConfig);
             <div className="max-w-5xl mx-auto px-4 h-16 flex justify-between items-center">
               <div 
                 onClick={() => { setActiveTab('home'); setSearchCode(''); setFoundPlayer(null); }}
-                className="flex items-center gap-2 cursor-pointer"
+                className="flex items-center gap-2 cursor-pointer transition-all hover:opacity-80"
               >
                 <Sparkles className="text-indigo-600 fill-indigo-100" />
                 <span className="font-black text-xl tracking-tight">BINGO<span className="text-indigo-600">PRO</span></span>
               </div>
 
               {user ? (
-                 <button onClick={() => setActiveTab('admin')} className="text-sm font-medium text-slate-500 hover:text-indigo-600 flex items-center gap-1">
-                    <Lock size={16}/> ADMIN
+                 <button onClick={() => setActiveTab('admin')} className="text-sm font-medium text-slate-500 hover:text-indigo-600 flex items-center gap-1 transition-colors">
+                    <Lock size={16}/> PANEL ADMIN
                  </button>
               ) : (
-                <button onClick={() => setActiveTab('admin')} className="text-sm font-medium text-slate-500 hover:text-indigo-600 flex items-center gap-1">
+                <button onClick={() => setActiveTab('admin')} className="text-sm font-medium text-slate-500 hover:text-indigo-600 flex items-center gap-1 transition-colors">
                   <Lock size={16}/> Admin
                 </button>
               )}
               
               {user && (
-                 <button onClick={handleLogout} className="text-sm font-medium text-red-500 flex items-center gap-1">
+                 <button onClick={handleLogout} className="text-sm font-medium text-red-500 hover:text-red-700 flex items-center gap-1 transition-colors">
                    <LogOut size={16}/> Salir
                  </button>
               )}
@@ -484,14 +507,14 @@ const app = initializeApp(firebaseConfig);
                   <input 
                     type="text" 
                     value={searchCode}
-                    onChange={(e) => setSearchCode(e.target.value)}
+                    onChange={(e) => setSearchCode(e.target.value.replace(/[^0-9]/g, ''))} // Solo números
                     placeholder="001"
                     maxLength={3}
                     className="w-full p-4 bg-transparent outline-none text-2xl font-black text-slate-800 placeholder:text-slate-300 font-mono"
                   />
                   <button 
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || searchCode.length === 0}
                     className="bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-xl font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-2 w-20"
                   >
                     {loading ? <Loader2 className="animate-spin" size={24} /> : <Search size={24} />}
@@ -506,11 +529,11 @@ const app = initializeApp(firebaseConfig);
             {/* VISTA 2: RESULTADO */}
             {activeTab === 'result' && foundPlayer && (
               <div className="w-full animate-fade-in">
-                <div className="flex justify-between items-center mb-6 no-print bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-                  <button onClick={() => { setActiveTab('home'); setFoundPlayer(null); }} className="flex items-center gap-2 text-slate-500 hover:text-slate-800">
-                    <X size={18} /> Cerrar Búsqueda
+                <div className="flex flex-col sm:flex-row justify-between items-center mb-6 no-print bg-white p-4 rounded-xl shadow-sm border border-slate-100 sticky top-16 z-20">
+                  <button onClick={() => { setActiveTab(user ? 'admin' : 'home'); setFoundPlayer(null); }} className="flex items-center gap-2 text-slate-500 hover:text-slate-800 py-2 sm:py-0">
+                    <X size={18} /> {user ? 'Volver a Admin' : 'Nueva Búsqueda'}
                   </button>
-                  <button onClick={handlePrint} className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg flex items-center gap-2 hover:bg-indigo-700">
+                  <button onClick={handlePrint} className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg flex items-center gap-2 hover:bg-indigo-700 transition-colors mt-3 sm:mt-0">
                     <Printer size={18} /> Imprimir Cartón
                   </button>
                 </div>
@@ -524,30 +547,34 @@ const app = initializeApp(firebaseConfig);
                 {!user ? (
                   // FORMULARIO DE LOGIN
                   <div className="max-w-sm mx-auto bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
-                    <h2 className="text-xl font-bold mb-6 text-center">Acceso Administrativo</h2>
-                    {authError && <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 text-center">{authError}</div>}
+                    <h2 className="text-2xl font-black mb-6 text-center text-slate-800">Acceso Administrativo</h2>
+                    {authError && <div className="bg-red-100 text-red-700 p-3 rounded-lg text-sm mb-4 text-center border border-red-200">{authError}</div>}
                     <form onSubmit={handleLogin} className="space-y-4">
                       <div>
-                        <label className="text-xs font-bold text-slate-400">EMAIL</label>
+                        <label className="text-xs font-bold text-slate-400 block mb-1">EMAIL</label>
                         <input 
                           type="email" 
                           required
-                          className="w-full border p-3 rounded-lg outline-none focus:border-indigo-500"
+                          className="w-full border p-3 rounded-lg outline-none focus:border-indigo-500 transition-colors"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                         />
                       </div>
                       <div>
-                        <label className="text-xs font-bold text-slate-400">CONTRASEÑA</label>
+                        <label className="text-xs font-bold text-slate-400 block mb-1">CONTRASEÑA</label>
                         <input 
                           type="password" 
                           required
-                          className="w-full border p-3 rounded-lg outline-none focus:border-indigo-500"
+                          className="w-full border p-3 rounded-lg outline-none focus:border-indigo-500 transition-colors"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                         />
                       </div>
-                      <button disabled={loading} className="w-full bg-slate-900 text-white py-3 rounded-lg font-bold hover:bg-slate-800 flex justify-center">
+                      <button 
+                        type="submit"
+                        disabled={loading} 
+                        className="w-full bg-slate-900 text-white py-3 rounded-lg font-bold hover:bg-slate-800 flex justify-center transition-all disabled:opacity-50"
+                      >
                         {loading ? <Loader2 className="animate-spin" size={24}/> : "Entrar"}
                       </button>
                     </form>
@@ -557,23 +584,24 @@ const app = initializeApp(firebaseConfig);
                   <div className="grid lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-1">
                       <div className="bg-white p-6 rounded-2xl shadow-lg border border-indigo-50 sticky top-24">
-                        <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-indigo-700">
-                          <UserPlus size={20}/> Nuevo Jugador
+                        <h3 className="font-bold text-xl mb-4 flex items-center gap-2 text-indigo-700">
+                          <UserPlus size={20}/> Crear Cartón
                         </h3>
                         <form onSubmit={handleCreatePlayer} className="space-y-4">
                           <div>
-                            <label className="text-xs font-bold text-slate-400">NÚMERO DE CARTÓN</label>
+                            <label className="text-xs font-bold text-slate-400 block mb-1">NÚMERO DE CARTÓN (ID)</label>
                             <input 
                               type="text" 
                               value={newId}
                               onChange={(e) => setNewId(e.target.value.replace(/[^0-9]/g, ''))} // Solo números
                               maxLength={3}
                               placeholder="001"
-                              className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 font-mono font-bold text-indigo-700"
+                              required
+                              className="w-full bg-indigo-50 border border-indigo-200 rounded-lg p-2 font-mono font-black text-indigo-700 text-lg text-center"
                             />
                           </div>
                           <div>
-                            <label className="text-xs font-bold text-slate-400">NOMBRE CLIENTE</label>
+                            <label className="text-xs font-bold text-slate-400 block mb-1">NOMBRE CLIENTE</label>
                             <input 
                               type="text" 
                               value={newName}
@@ -583,8 +611,12 @@ const app = initializeApp(firebaseConfig);
                               className="w-full border-2 border-slate-200 rounded-lg p-2 focus:border-indigo-500 outline-none"
                             />
                           </div>
-                          <button disabled={actionLoading} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-bold shadow-md transition-all flex justify-center">
-                            {actionLoading ? <Loader2 className="animate-spin" size={24}/> : "Guardar y Generar"}
+                          <button 
+                            type="submit"
+                            disabled={actionLoading} 
+                            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-bold shadow-md transition-all flex justify-center disabled:opacity-50"
+                          >
+                            {actionLoading ? <Loader2 className="animate-spin" size={24}/> : "Guardar y Generar Cartones"}
                           </button>
                         </form>
                       </div>
@@ -592,22 +624,22 @@ const app = initializeApp(firebaseConfig);
 
                     <div className="lg:col-span-2 bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
                       <div className="p-4 bg-slate-50 border-b border-slate-200 font-bold text-slate-700 flex justify-between items-center">
-                        Lista de Cartones ({players.length})
+                        Lista de Cartones Registrados ({players.length})
                       </div>
-                      <div className="max-h-[500px] overflow-y-auto p-2">
+                      <div className="max-h-[60vh] overflow-y-auto p-2">
                         {players.map((p) => (
-                          <div key={p.id} className="flex justify-between items-center p-3 hover:bg-indigo-50 rounded-lg border-b border-slate-50">
+                          <div key={p.id} className="flex justify-between items-center p-3 hover:bg-indigo-50 rounded-lg border-b border-slate-100 transition-colors">
                             <div className="flex items-center gap-3">
                               <span className="font-mono font-bold text-indigo-600 bg-indigo-100 px-2 py-1 rounded text-sm">{p.id}</span>
-                              <span className="font-medium">{p.name}</span>
+                              <span className="font-medium text-slate-700">{p.name}</span>
                             </div>
                             <div className="flex gap-2">
-                               <button title="Ver Cartón" onClick={() => { setFoundPlayer(p); setActiveTab('result'); }} className="p-2 text-blue-500 hover:bg-blue-100 rounded-full"><Search size={16}/></button>
-                               <button title="Eliminar" onClick={() => handleDelete(p.id)} className="p-2 text-red-500 hover:bg-red-100 rounded-full"><Trash2 size={16}/></button>
+                               <button title="Ver Cartón" onClick={() => { setFoundPlayer(p); setActiveTab('result'); }} className="p-2 text-blue-500 hover:bg-blue-100 rounded-full transition-colors"><Search size={16}/></button>
+                               <button title="Eliminar" onClick={() => handleDelete(p.id, p.name)} className="p-2 text-red-500 hover:bg-red-100 rounded-full transition-colors"><Trash2 size={16}/></button>
                             </div>
                           </div>
                         ))}
-                        {players.length === 0 && <p className="text-center p-10 text-slate-400">Sin registros en la base de datos.</p>}
+                        {players.length === 0 && <p className="text-center p-10 text-slate-400">No hay cartones registrados aún. Usa el formulario de la izquierda.</p>}
                       </div>
                     </div>
                   </div>
@@ -629,3 +661,4 @@ const app = initializeApp(firebaseConfig);
     </script>
 </body>
 </html>
+
