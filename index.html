@@ -440,7 +440,7 @@
           });
           setNewName('');
           
-          document.getElementById('modal-message').innerText = `✅ Cartón #${formattedId} asignado a ${newName}. Imagen: ${getCardImageUrl(formattedId)}`;
+          document.getElementById('modal-message').innerText = `✅ Cartón #${formattedId} asignado a ${newName}.`;
           document.getElementById('error-modal').classList.remove('hidden');
           setTimeout(() => document.getElementById('error-modal').classList.add('hidden'), 5000);
           
@@ -586,7 +586,7 @@
               <div className="w-full max-w-4xl animate-fade-in relative z-10">
                 {!user ? (
                   // FORMULARIO DE LOGIN
-                  <div className="max-w-sm mx-auto bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
+                  <div className="max-w-sm mx-auto bg-white p-8 rounded-2xl shadow-xl border border-red-50">
                     <h2 className="text-xl font-bold mb-6 text-center">Acceso Administrativo</h2>
                     {authError && <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 text-center">{authError}</div>}
                     <form onSubmit={handleLogin} className="space-y-4">
@@ -649,7 +649,7 @@
                           <button disabled={actionLoading} className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-bold shadow-md transition-all flex justify-center">
                             {actionLoading ? <Loader2 className="animate-spin" size={24}/> : "Asignar Cartón"}
                           </button>
-                           <p className="text-xs text-slate-500 mt-2 text-center">Se usará la imagen: <span className="font-mono text-red-500">{`cartas/carta${newId.padStart(3, '0')}.jpg`}</span></p>
+                           {/* ELIMINADA LA LÍNEA QUE MOSTRABA LA RUTA DEL ARCHIVO */}
                         </form>
                       </div>
                     </div>
