@@ -558,7 +558,7 @@
                   <button 
                     type="submit"
                     disabled={loading}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-xl font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-2 w-20"
+                    className="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-2 w-20"
                   >
                     {loading ? <Loader2 className="animate-spin" size={24} /> : <Search size={24} />}
                   </button>
@@ -573,7 +573,7 @@
                   <button onClick={() => { setActiveTab('home'); setFoundPlayer(null); }} className="flex items-center gap-2 text-slate-500 hover:text-slate-800">
                     <X size={18} /> Cerrar Búsqueda
                   </button>
-                  <button onClick={handlePrint} className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg flex items-center gap-2 hover:bg-indigo-700">
+                  <button onClick={handlePrint} className="bg-red-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg flex items-center gap-2 hover:bg-red-700">
                     <Printer size={18} /> Imprimir (Solo Imagen)
                   </button>
                 </div>
@@ -595,7 +595,7 @@
                         <input 
                           type="email" 
                           required
-                          className="w-full border p-3 rounded-lg outline-none focus:border-indigo-500"
+                          className="w-full border p-3 rounded-lg outline-none focus:border-red-500"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                         />
@@ -619,8 +619,8 @@
                   // PANEL DE ADMINISTRACIÓN
                   <div className="grid lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-1">
-                      <div className="bg-white p-6 rounded-2xl shadow-lg border border-indigo-50 sticky top-24">
-                        <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-indigo-700">
+                      <div className="bg-white p-6 rounded-2xl shadow-lg border border-red-50 sticky top-24">
+                        <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-red-700">
                           <UserPlus size={20}/> Asignar Cartón
                         </h3>
                         <form onSubmit={handleCreatePlayer} className="space-y-4">
@@ -632,7 +632,7 @@
                               onChange={(e) => setNewId(e.target.value.replace(/[^0-9]/g, ''))} // Solo números
                               maxLength={3}
                               placeholder="001"
-                              className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 font-mono font-bold text-indigo-700"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 font-mono font-bold text-red-700"
                             />
                           </div>
                           <div>
@@ -646,10 +646,10 @@
                               className="w-full border-2 border-slate-200 rounded-lg p-2 focus:border-indigo-500 outline-none"
                             />
                           </div>
-                          <button disabled={actionLoading} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-bold shadow-md transition-all flex justify-center">
+                          <button disabled={actionLoading} className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-bold shadow-md transition-all flex justify-center">
                             {actionLoading ? <Loader2 className="animate-spin" size={24}/> : "Asignar Cartón"}
                           </button>
-                           <p className="text-xs text-slate-500 mt-2 text-center">Se usará la imagen: <span className="font-mono text-indigo-500">{`cartas/carta${newId.padStart(3, '0')}.jpg`}</span></p>
+                           <p className="text-xs text-slate-500 mt-2 text-center">Se usará la imagen: <span className="font-mono text-red-500">{`cartas/carta${newId.padStart(3, '0')}.jpg`}</span></p>
                         </form>
                       </div>
                     </div>
@@ -700,13 +700,13 @@
                           REEMPLAZA LA ETIQUETA 'img' CON LA RUTA DE TU LOGO.
                           Ejemplo: <img src="./ruta/a/masson-logo.png" alt="Masson Logo" class="h-4 inline-block" /> 
                       */}
-                      <span class="font-black text-indigo-600">
+                      <span class="font-black text-red-600">
                           Masson©
                       </span>
                       Todos los derechos reservados.
                   </p>
                   <p class="text-xs text-slate-500 mt-2">
-                      Página creada por <span class="font-bold text-indigo-700">AngellAngell</span>. 
+                      Página creada por <span class="font-bold text-red-700">AngellAngell</span>. 
                       Escribe al WhatsApp <span class="font-bold text-green-600">+584226431972</span> para más información.
                   </p>
               </div>
