@@ -141,11 +141,11 @@
     // Reemplaza esta URL con la URL base de tu repositorio de GitHub donde están las cartas.
     // Ejemplo: 'https://raw.githubusercontent.com/TuUsuario/TuRepositorio/main/cartas/'
     // Asegúrate de que termine en un slash (/).
-    const BINGO_CARDS_BASE_URL = 'https://raw.githubusercontent.com/AAlll33/bingosue/main/carta001.jpeg'; 
+    const BINGO_CARDS_BASE_URL = 'https://github.com/AAlll33/bingosue/'; 
     
     // Función para construir la URL de la imagen
     const getCardImageUrl = (playerId) => {
-        // Formato: carta001.jpeg
+        // Formato: carta001.jpg
         const cardName = `carta${playerId}.jpg`;
         return `${BINGO_CARDS_BASE_URL}${cardName}`;
     };
@@ -189,7 +189,7 @@
       if (!player) return null;
 
       const cardUrl = getCardImageUrl(player.id);
-      const downloadFileName = `Bingo_Ticket_${player.id}_${player.name.replace(/\s/g, '_')}.jpeg`;
+      const downloadFileName = `Bingo_Ticket_${player.id}_${player.name.replace(/\s/g, '_')}.jpg`;
 
       // Simplemente mostramos la imagen basándonos en el ID del jugador
       return (
