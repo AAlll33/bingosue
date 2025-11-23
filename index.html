@@ -116,24 +116,23 @@
     <script type="text/babel">
     const { useState, useEffect, createElement } = React;
     
-    /**
-     * ------------------------------------------------------------------
-     * CONFIGURACIÓN DE FIREBASE (¡IMPORTANTE! ESTA SECCIÓN SE EDITA)
-     * ------------------------------------------------------------------
-     * PASO 1: Cuando crees un nuevo proyecto en Firebase para tu cliente,
-     * pega aquí su objeto de configuración completo.
-     * ------------------------------------------------------------------
-     */
-    const firebaseConfig = {
-      // ** REEMPLAZAR AQUÍ CON LA CONFIGURACIÓN DEL NUEVO CLIENTE **
-      apiKey: "AIzaSyD4VZzcRuyvECR_E5WWY-P4vNjkKTZ5RjA",
-      authDomain: "bingomaster-858d3.firebaseapp.com",
-      projectId: "bingomaster-858d3",
-      storageBucket: "bingomaster-858d3.firebasestorage.app",
-      messagingSenderId: "219714758222",
-      appId: "1:219714758222:web:3f739569de1aec4233451f"
-      // ** FIN DEL BLOQUE DE CONFIGURACIÓN DEL CLIENTE **
-    };
+    // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDI3PYFDvQJ1CtF_hLVhhn1jc0_5S1Aog0",
+  authDomain: "bingosue-cfca8.firebaseapp.com",
+  projectId: "bingosue-cfca8",
+  storageBucket: "bingosue-cfca8.firebasestorage.app",
+  messagingSenderId: "167707585444",
+  appId: "1:167707585444:web:5bbd5ea2d3242df59f6f31"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
     // Inicializamos Firebase y obtenemos las instancias de DB y Auth
     // Usamos las variables globales cargadas por el script type="module"
